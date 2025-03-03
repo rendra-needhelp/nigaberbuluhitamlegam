@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Lengkap Rumus Laju Reaksi</title>
+    <style>
+        :root {
+            --primary: #067c69;
+            --secondary: #3498db;
+            --accent: #000000;
+            --light: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: #4964d1;
+            color: var(--primary);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        .table-section {
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 1px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.1em;
+            white-space: nowrap;
+        }
+
+        .variable-table {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .variable-table td {
+            border: none;
+            padding: 8px;
+        }
+
+        .example {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .nav-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-link {
+            display: block;
+            color: var(--secondary);
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: var(--light);
+        }
+
+        @media (max-width: 768px) {
+            .nav-sidebar {
+                display: none;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-sidebar">
+        <a href="#basic" class="nav-link">Hukum Dasar</a>
+        <a href="#half-life" class="nav-link">Waktu Paruh</a>
+        <a href="#arrhenius" class="nav-link">Arrhenius</a>
+        <a href="#methods" class="nav-link">Metode</a>
+    </nav>
+
+    <div class="container">
+        <h1>Tabel Rumus Laju Reaksi</h1>
+
+        <!-- Hukum Dasar Laju Reaksi -->
+        <div class="table-section" id="basic">
+            <h2>1. Hukum Dasar Laju Reaksi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Konsep</th>
+                        <th>Rumus</th>
+                        <th>Penjelasan</th>
+                        <th>Contoh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hukum Laju Umum</td>
+                        <td class="formula">r = k[A]<sup>m</sup>[B]<sup>n</sup></td>
+                        <td>
+                            <div class="variable-table">
+                                <table>
+                                    <tr><td>r</td><td>= Laju reaksi (M/s)</td></tr>
+                                    <tr><td>k</td><td>= Konstanta laju</td></tr>
+                                    <tr><td>m+n</td><td>= Orde reaksi total</td></tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td class="example">
+                            Reaksi: 2A + B → C<br>
+                            Orde A=1, Orde B=2<br>
+                            r = k[A][B]<sup>2</sup>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan baris lainnya -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Waktu Paruh -->
+        <div class="table-section" id="half-life">
+            <h2>2. Waktu Paruh</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Orde Reaksi</th>
+                        <th>Rumus</th>
+                        <th>Satuan k</th>
+                        <th>Ketergantungan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Orde 0</td>
+                        <td class="formula">t<sub>½</sub> = [A]<sub>0</sub>/(2k)</td>
+                        <td>M·s<sup>-1</sup></td>
+                        <td>Bergantung [A]<sub>0</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Orde 1</td>
+                        <td class="formula">t<sub>½</sub> = ln(2)/k</td>
+                        <td>s<sup>-1</sup></td>
+                        <td>Tidak tergantung [A]<sub>0</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Orde 2</td>
+                        <td class="formula">t<sub>½</sub> = 1/(k[A]<sub>0</sub>)</td>
+                        <td>M<sup>-1</sup>·s<sup>-1</sup></td>
+                        <td>Bergantung [A]<sub>0</sub></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Persamaan Arrhenius -->
+        <div class="table-section" id="arrhenius">
+            <h2>3. Persamaan Arrhenius</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bentuk</th>
+                        <th>Rumus</th>
+                        <th>Variabel</th>
+                        <th>Aplikasi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bentuk Eksponensial</td>
+                        <td class="formula">k = A·e<sup>-Ea/(RT)</sup></td>
+                        <td>
+                            Ea = Energi aktivasi (J/mol)<br>
+                            R = 8.314 J/mol·K<br>
+                            T = Temperatur (K)
+                        </td>
+                        <td>Menghitung pengaruh suhu terhadap laju reaksi</td>
+                    </tr>
+                    <tr>
+                        <td>Bentuk Linear</td>
+                        <td class="formula">ln(k) = ln(A) - Ea/(RT)</td>
+                        <td>Plot ln(k) vs 1/T menghasilkan garis lurus</td>
+                        <td>Menentukan Ea secara eksperimen</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Metode Penentuan Orde Reaksi -->
+        <div class="table-section" id="methods">
+            <h2>4. Metode Penentuan Orde Reaksi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metode</th>
+                        <th>Prosedur</th>
+                        <th>Rumus</th>
+                        <th>Keunggulan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Metode Laju Awal</td>
+                        <td>Mengukur laju awal dengan variasi konsentrasi</td>
+                        <td class="formula">r = k[A]<sup>m</sup>[B]<sup>n</sup></td>
+                        <td>Mengabaikan produk</td>
+                    </tr>
+                    <tr>
+                        <td>Metode Integral</td>
+                        <td>Mencocokkan data dengan persamaan integral</td>
+                        <td class="formula">
+                            Orde 0: [A] = [A]<sub>0</sub> - kt<br>
+                            Orde 1: ln[A] = ln[A]<sub>0</sub> - kt
+                        </td>
+                        <td>Akurat untuk data lengkap</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Bagian tambahan lainnya -->
+        <div class="table-section">
+            <h2>5. Konsep Penting Lainnya</h2>
+            <div class="variable-table">
+                <h3>Teori Tumbukan</h3>
+                <ul>
+                    <li>Molekul harus bertumbukan dengan orientasi benar</li>
+                    <li>Energi tumbukan ≥ Ea</li>
+                    <li>Faktor frekuensi (Z) = Jumlah tumbukan per detik</li>
+                </ul>
+
+                <h3>Pengaruh Katalis</h3>
+                <ul>
+                    <li>Menurunkan Ea</li>
+                    <li>Meningkatkan frekuensi tumbukan efektif</li>
+                    <li>Tidak mengubah ΔH reaksi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll untuk navigasi
+        document.querySelectorAll('.nav-link').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        
+            
+    </script>
+    
+</body>
+</html>

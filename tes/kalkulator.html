@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laju Reaksi Pro - Kalkulator & Rumus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #128ada;
+            --secondary: #4CAF50;
+            --accent: #FFC107;
+            --dark: #1A237E;
+            --light: #E8EAF6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(45deg, var(--dark), var(--primary));
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+            animation: fadeIn 1s;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .calculator-card {
+            background: rgba(5, 62, 95, 0.842);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(6, 95, 76, 0.712);
+            transition: transform 0.3s;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .formula-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .formula-card {
+            background: rgb(0, 0, 0);
+            padding: 1.5rem;
+            border-radius: 10px;
+            position: relative;
+            cursor: help;
+        }
+
+        .formula-card::after {
+            content: "ℹ";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--accent);
+        }
+
+        input, select, button {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            width: 100%;
+            background: rgba(141, 207, 238, 0.89);
+            border: 1px solid var(--accent);
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        button {
+            background: var(--secondary);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #42d449;
+        }
+
+        .result {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        #reactionChart {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧪 Untuk Mempermudah pengerjaan soal hitung- hitungan laju reaksi</h1>
+            <p>Kalkulator Laju Reaksi</p>
+        </header>
+
+        <!-- Kalkulator 1: Hukum Laju -->
+        <div class="calculator-card">
+            <h2>Hukum Laju Umum</h2>
+            <p>Rate = k[A]<sup>m</sup>[B]<sup>n</sup></p>
+            <input type="number" id="k" placeholder="Konstanta Laju (k)" step="0.0001">
+            <input type="number" id="A" placeholder="Konsentrasi [A] (M)">
+            <input type="number" id="B" placeholder="Konsentrasi [B] (M)">
+            <input type="number" id="m" placeholder="Orde Reaksi m">
+            <input type="number" id="n" placeholder="Orde Reaksi n">
+            <button onclick="calculateRate()">Hitung Laju Reaksi</button>
+            <div class="result" id="rateResult"></div>
+        </div>
+
+        <!-- Kalkulator 2: Waktu Paruh -->
+        <div class="calculator-card">
+            <h2>Waktu Paruh</h2>
+            <select id="orderSelect">
+                <option value="0">Orde Nol</option>
+                <option value="1">Orde Satu</option>
+                <option value="2">Orde Dua</option>
+            </select>
+            <input type="number" id="halfLifeK" placeholder="Konstanta Laju (k)">
+            <input type="number" id="A0" placeholder="Konsentrasi Awal [A]₀">
+            <button onclick="calculateHalfLife()">Hitung Waktu Paruh</button>
+            <div class="result" id="halfLifeResult"></div>
+        </div>
+
+        <!-- Grafik Reaksi -->
+        <canvas id="reactionChart"></canvas>
+
+        <!-- Daftar Rumus -->
+        <div class="formula-section">
+            <div class="formula-card">
+                <h3>Hukum Laju Differensial</h3>
+                <p>Rate = -d[A]/dt = k[A]<sup>n</sup></p>
+            </div>
+            <div class="formula-card">
+                <h3>Hukum Laju Terintegrasi (Orde 1)</h3>
+                <p>ln[A] = -kt + ln[A]₀</p>
+            </div>
+            <div class="formula-card">
+                <h3>Waktu Paruh Orde 1</h3>
+                <p>t<sub>½</sub> = ln(2)/k</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Chart
+        let reactionChart;
+        const ctx = document.getElementById('reactionChart').getContext('2d');
+        
+        function initChart() {
+            reactionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Konsentrasi vs Waktu',
+                        data: [],
+                        borderColor: '#4CAF50',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Grafik Reaksi Kimia'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Kalkulator Hukum Laju
+        function calculateRate() {
+            const k = parseFloat(document.getElementById('k').value);
+            const A = parseFloat(document.getElementById('A').value);
+            const B = parseFloat(document.getElementById('B').value);
+            const m = parseFloat(document.getElementById('m').value);
+            const n = parseFloat(document.getElementById('n').value);
+            
+            const rate = k * (A ** m) * (B ** n);
+            document.getElementById('rateResult').innerHTML = 
+                `Laju Reaksi: ${rate.toExponential(2)} M/s`;
+        }
+
+        // Kalkulator Waktu Paruh
+        function calculateHalfLife() {
+            const order = document.getElementById('orderSelect').value;
+            const k = parseFloat(document.getElementById('halfLifeK').value);
+            const A0 = parseFloat(document.getElementById('A0').value);
+            
+            let result;
+            switch(order) {
+                case '0':
+                    result = A0 / (2 * k);
+                    break;
+                case '1':
+                    result = Math.log(2) / k;
+                    break;
+                case '2':
+                    result = 1 / (k * A0);
+                    break;
+            }
+            
+            document.getElementById('halfLifeResult').innerHTML = 
+                `Waktu Paruh: ${result.toFixed(2)} detik`;
+        }
+
+        // Update Grafik
+        function updateChart() {
+            // Implementasi data dinamis untuk grafik
+            const time = Array.from({length: 10}, (_, i) => i);
+            const concentration = time.map(t => 1/(1 + t)); // Contoh data
+            
+            reactionChart.data.labels = time;
+            reactionChart.data.datasets[0].data = concentration;
+            reactionChart.update();
+        }
+
+        // Inisialisasi awal
+        initChart();
+        updateChart();
+
+        // Tooltip untuk rumus
+        document.querySelectorAll('.formula-card').forEach(card => {
+            card.addEventListener('mouseover', () => {
+                card.style.transform = 'scale(1.05)';
+            });
+            card.addEventListener('mouseout', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

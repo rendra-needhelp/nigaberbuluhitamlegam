@@ -1,0 +1,52 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #459cda;
+    font-size: 30px; /* Increased font size for better readability */
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 50px;
+}
+
+.hidden { display: none; }
+
+
+/* Animasi Jawaban Salah */
+.wrong {
+    animation: shake 1.5s;
+    color: #e5ff00;
+}
+/* Animasi Jawaban Benar */
+.correct {
+    animation: confetti 1s ease-out;
+    color: #e5ff00;
+}
+button, .option-button {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid #000000;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    transition: all 0.3s ease;
+}
+s
+button:hover, .option-button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+@keyframes confetti {
+    0% { transform: translateY(0) rotate(0); }
+    100% { transform: translateY(-100px) rotate(360deg); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}

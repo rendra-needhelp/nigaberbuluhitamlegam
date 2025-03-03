@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <title>Laju Reaksi</title>
+    <link rel="stylesheet" href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\awal\iloveyou.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo" data-aos="zoom-in" data-aos-duration="1000">
+                <span>Kimia Kelas 11</span>
+            </div>
+            <div class="links">
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100"><a href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\faktor\palpase.html">Faktor</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200"><a href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\teori\pppeee.html">Teori</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300"><a href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\tes\pale3.html">Rumus</a></div>
+                             <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500"><a href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\tes\kalkulator.html">Kalkulator Laju Reaksi</a></div>
+                <div class="link contact-btn" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600"><a href="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\tes\niha45.html">Contoh soal</a></div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+        </div>
+        
+        </div>
+    </nav>
+        <section>
+            <div class="main-container">
+                <div class="image" data-aos="zoom-in-right" data-aos-duration="2500">
+                    <img src="C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\awal\download-removebg-preview.png"alt="" >
+                </div>
+                <div class="content">
+                    <h1 data-aos="fade-left" data-aos-duration="1000" data-aos-delay="800">Pengertian <span> Laju Reaksi</span></h1>
+                    <div class="typewriter" data-aos="fade-right" data-aos-duration="1000" data-aos-delay="900">KELAS 11 <span></span></div>
+                    <p data-aos="flip-up" data-aos-duration="1000" data-aos-delay="1000">Laju reaksi merupakan kecepatan terjadinya reaksi kimia, yang diukur berdasarkan perubahan konsentrasi zat reaktan atau produk per satuan waktu. </p>
+                    <div class="social-links" data-aos="flip-down" data-aos-duration="1000" data-aos-delay="1200">
+                        <p>click github</p>
+                        <a href= "C:\Users\LENOVO LOQ\OneDrive\文档\laju reaksi2\3d yeah\popo.html" ><i class="fa-brands fa-Manchester United"></i></a>
+                    </div>
+                    <div class="btn" data-aos="zoom-out-right" data-aos-duration="1000" data-aos-delay="1300">
+                    </div>
+                    <audio controls>
+                        <source src="song/stronger kanye.mp3" type="audio/mp3">
+                    </audio>
+                    <button onclick="shufflePlaylist()">ganti</button>
+                    <script>
+                        let currentTrack = 0;
+                        const tracks = [
+                            "song/stronger kanye.mp3",
+                            "song/money tree.mp3",
+                            "song/Billie Eilish - BIRDS OF A FEATHER (Official Music Video).mp3",
+                            "song/the less i know.mp3"
+                        ];
+                        
+                        function shufflePlaylist() {
+                            for (let i = tracks.length - 1; i > 0; i--) {
+                                const j = Math.floor(Math.random() * (i + 1));
+                                [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
+                            }
+                            currentTrack = 0;
+                            const audio = document.querySelector('audio');
+                            audio.src = tracks[currentTrack];
+                            audio.play();
+                        }
+
+                        function playNextTrack() {
+                            const audio = document.querySelector('audio');
+                            currentTrack = (currentTrack + 1) % tracks.length;
+                            audio.src = tracks[currentTrack];
+                            audio.play();
+                        }
+                        
+                        document.querySelector('audio').addEventListener('ended', playNextTrack);
+                    </script>
+            </div>
+        </section>
+                <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+          AOS.init({offset:0});
+        </script>
+        <script>
+            function hamburg(){
+                const navbar = document.querySelector(".dropdown")
+                navbar.style.transform = "translateY(0px)"
+            }
+            function cancel(){
+                const navbar = document.querySelector(".dropdown")
+                navbar.style.transform = "translateY(-500px)"
+            }
+        </script>
+</body>
+</html>

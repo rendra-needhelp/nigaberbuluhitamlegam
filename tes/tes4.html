@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Laju Reaksi Bagian Hitung-hitungan</title>
+    <style>
+        /* CSS styles remain exactly the same */
+        :root {
+            --primary: #10a2e6;
+            --secondary: #1013f3;
+            --correct: #2ecc71;
+            --incorrect: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #2dac7b;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-container {
+            min-height: 300px;
+            opacity: 1;
+            transition: all 0.5s ease;
+        }
+
+        .question-container.fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .question {
+            font-size: 1.4em;
+            color: var(--primary);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .answer-option {
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .answer-option:hover {
+            background: #1c89bb;
+            transform: translateX(10px);
+        }
+
+        .correct {
+            background: var(--correct) !important;
+            color: rgb(0, 255, 0);
+            animation: pulse 0.5s;
+        }
+
+        .incorrect {
+            background: var(--incorrect) !important;
+            color: rgb(255, 5, 5);
+            animation: shake 0.4s;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: #eee;
+            margin-bottom: 20px;
+            border-radius: 3px;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--secondary);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        .explanation {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 0 15px;
+        }
+
+        .show-explanation {
+            max-height: 500px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        <div class="question-container">
+            <div class="question"></div>
+            <div class="answer-options"></div>
+            <div class="explanation"></div>
+        </div>
+    </div>
+
+    <script>
+        // Original questions array
+        const questions = [
+            {
+                question: "Dalam reaksi 2A + B → C, konsentrasi A berkurang dari 0.4 M menjadi 0.2 M dalam 50 detik. Berapa laju reaksi rata-rata pengurangan A?",
+                formula: "Δ[A]/Δt = (0.4 - 0.2)/50 = 0.004 M/s",
+                explanation: "Laju pengurangan reaktan dihitung dengan perubahan konsentrasi dibagi selang waktu. Koefisien stoikiometri tidak mempengaruhi perhitungan laju reaktan individual.",
+                answers: ["0.004 M/s", "0.008 M/s", "0.002 M/s", "0.006 M/s"],
+                correct: 0
+            },
+            {
+        question: "Dalam reaksi 2A → B, konsentrasi A berkurang dari 0.8 M menjadi 0.2 M dalam 60 detik. Berapa laju rata-rata pengurangan A?",
+        formula: "Δ[A]/Δt = (0.8 - 0.2)/60 = 0.01 M/s",
+        explanation: "Laju pengurangan reaktan dihitung dari perubahan konsentrasi dibagi waktu, tanpa memperhitungkan koefisien stoikiometri",
+        answers: ["0.02 M/s", "0.01 M/s", "0.005 M/s", "0.03 M/s"],
+        correct: 0
+    },
+    {
+        question: "Data percobaan: [NO] = 0.1 M, [H₂] = 0.2 M → Laju = 0.48 M/s. Jika konsentrasi kedua pereaksi dilipatgandakan, berapa laju baru? (Reaksi orde 1 terhadap NO dan orde 2 terhadap H₂)",
+        formula: "Laju = k[NO][H₂]² → 0.48 = k(0.1)(0.2)² → k = 120. Laju baru = 120×(0.2)×(0.4)² = 3.84 M/s",
+        explanation: "Laju berbanding lurus dengan [NO] dan kuadrat [H₂]. Faktor perubahan: 2 × (2)² = 8 × laju awal",
+        answers: ["3.84 M/s", "1.92 M/s", "7.68 M/s", "0.96 M/s"],
+        correct: 0
+    },
+    {
+        question: "Waktu paruh reaksi orde pertama adalah 25 menit. Berapa persen zat yang tersisa setelah 75 menit?",
+        formula: "t1/2 = ln2/k → n = 75/25 = 3 paruh → Sisa = (1/2)³ = 1/8 = 12.5%",
+        explanation: "Setiap waktu paruh menyisakan 50% dari jumlah sebelumnya. 3 waktu paruh = (½)^3",
+        answers: ["12.5%", "25%", "6.25%", "37.5%"],
+        correct: 0
+    },
+    {
+        question: "Reaksi orde nol dengan k = 0.05 M/menit. Berapa waktu yang dibutuhkan untuk konsentrasi turun dari 0.8 M ke 0.3 M?",
+        formula: "[A] = [A]₀ - kt → t = (0.8 - 0.3)/0.05 = 10 menit",
+        explanation: "Pada reaksi orde nol, laju tetap konstan tidak tergantung konsentrasi",
+        answers: ["10 menit", "5 menit", "15 menit", "20 menit"],
+        correct: 0
+    },
+    {
+        question: "Reaksi kedua orde dengan k = 0.4 M⁻¹s⁻¹. Jika [A] awal = 0.5 M, berapa waktu paruh?",
+        formula: "t1/2 = 1/(k[A]₀) = 1/(0.4×0.5) = 5 detik",
+        explanation: "Waktu paruh reaksi orde kedua berbanding terbalik dengan konsentrasi awal",
+        answers: ["5 s", "2.5 s", "10 s", "20 s"],
+        correct: 0
+    },
+    {
+        question: "Energi aktivasi reaksi adalah 75 kJ/mol. Jika k pada 300K = 2×10⁻³ s⁻¹, berapa k pada 310K? (R=8.314 J/molK, asumsi A konstan)",
+        formula: "ln(k2/k1) = -Ea/R(1/T2 - 1/T1) → ln(k2/0.002) = -75000/8.314(1/310 - 1/300) → k2 ≈ 0.004 s⁻¹",
+        explanation: "Kenaikan temperatur meningkatkan laju reaksi secara eksponensial",
+        answers: ["0.004 s⁻¹", "0.002 s⁻¹", "0.008 s⁻¹", "0.001 s⁻¹"],
+        correct: 0
+    },
+    {
+        question: "Data percobaan menunjukkan waktu paruh berkurang setengah ketika konsentrasi awal dilipatduakan. Berapa orde reaksi?",
+        formula: "t1/2 ∝ 1/[A]₀^(n-1). Jika [A]₀ 2× → t1/2 ½ → n = 2",
+        explanation: "Hubungan waktu paruh dengan konsentrasi awal menentukan orde reaksi",
+        answers: ["Orde 2", "Orde 1", "Orde 0", "Orde 3"],
+        correct: 0
+    },
+    {
+        question: "Laju reaksi 2A + B → produk adalah 0.15 M/s. Berapa laju pembentukan produk?",
+        formula: "Laju produk = 1/1 × laju reaksi = 0.15 M/s",
+        explanation: "Koefisien stoikiometri produk menentukan laju pembentukannya",
+        answers: ["0.15 M/s", "0.30 M/s", "0.075 M/s", "0.05 M/s"],
+        correct: 0
+    },
+    {
+        question: "Suatu reaksi memiliki energi aktivasi 50 kJ/mol. Jika katalis menurunkan Ea menjadi 30 kJ/mol, berapa faktor peningkatan laju pada 298K? (Asumsi A sama)",
+        formula: "ln(k2/k1) = (Ea1 - Ea2)/(RT) → (50000-30000)/(8.314×298) ≈ 8.07 → e^8.07 ≈ 3200",
+        explanation: "Katalis menurunkan Ea sehingga meningkatkan laju secara eksponensial",
+        answers: ["~3200×", "~100×", "~10×", "~500×"],
+        correct: 0
+    },
+    {
+        question: "Reaksi orde pertama memiliki waktu paruh 10 menit. Berapa waktu yang dibutuhkan untuk 90% zat terurai?",
+        formula: "ln([A]₀/[A]) = kt → k = ln2/10. Untuk 90% terurai → ln(1/0.1)/(ln2/10) ≈ 33.2 menit",
+        explanation: "Waktu dekomposisi lengkap tidak terdefinisi, tapi 90% terurai membutuhkan ~3.32 waktu paruh",
+        answers: ["33.2 menit", "10 menit", "23 menit", "45 menit"],
+        correct: 0
+    },
+    {
+        question: "Laju awal reaksi A + B → C diukur sebagai 0.8 M/s ketika [A]=0.2 M dan [B]=0.1 M. Jika laju = k[A]²[B], berapa nilai k?",
+        formula: "k = laju/([A]²[B]) = 0.8/((0.2)²(0.1)) = 0.8/(0.004) = 200 M⁻²s⁻¹",
+        explanation: "Menentukan konstanta laju dari hukum laju dan data eksperimen",
+        answers: ["200 M⁻²s⁻¹", "400 M⁻²s⁻¹", "100 M⁻²s⁻¹", "50 M⁻²s⁻¹"],
+        correct: 0
+    },
+    {
+        question: "Suatu reaksi meningkat lajunya 8× ketika [A] dilipatduakan. Berapa orde reaksi terhadap A?",
+        formula: "Faktor peningkatan = (2)^n = 8 → n = 3",
+        explanation: "Hubungan eksponensial antara konsentrasi dan laju menunjukkan orde reaksi",
+        answers: ["Orde 3", "Orde 2", "Orde 1", "Orde 0"],
+        correct: 0
+    },
+    {
+        question: "Reaksi memiliki konstanta laju 3×10⁻² s⁻¹ pada 25°C dan 9×10⁻² s⁻¹ pada 35°C. Berapa energi aktivasi? (R=8.314 J/molK)",
+        formula: "ln(3) = Ea/(8.314)(1/298 - 1/308) → Ea ≈ 85 kJ/mol",
+        explanation: "Menggunakan persamaan Arrhenius untuk menentukan energi aktivasi",
+        answers: ["~85 kJ/mol", "~45 kJ/mol", "~120 kJ/mol", "~25 kJ/mol"],
+        correct: 0
+    },
+    {
+        question: "Campuran 5 L dengan 2 mol A bereaksi selama 10 detik menghasilkan 0.5 mol C. Berapa laju rata-rata pembentukan C?",
+        formula: "Δ[C]/Δt = (0.5 mol/5 L)/10 s = 0.01 M/s",
+        explanation: "Laju dihitung berdasarkan perubahan molaritas per satuan waktu",
+        answers: ["0.01 M/s", "0.05 M/s", "0.02 M/s", "0.005 M/s"],
+        correct: 0
+    }
+
+            // ... all other questions remain exactly as they were ...
+        ];
+
+        // Fisher-Yates shuffle algorithm
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Shuffle answers for each question
+        questions.forEach(q => {
+            const originalCorrect = q.answers[q.correct];
+            const shuffledAnswers = shuffleArray([...q.answers]);
+            q.answers = shuffledAnswers;
+            q.correct = shuffledAnswers.indexOf(originalCorrect);
+        });
+
+        // Quiz logic
+        let currentQuestion = 0;
+        let score = 0;
+        const questionContainer = document.querySelector('.question-container');
+        const questionEl = document.querySelector('.question');
+        const answerOptions = document.querySelector('.answer-options');
+        const explanationEl = document.querySelector('.explanation');
+        const progressBar = document.querySelector('.progress');
+
+        function showQuestion() {
+            progressBar.style.width = `${(currentQuestion/questions.length)*100}%`;
+            const q = questions[currentQuestion];
+            
+            questionEl.innerHTML = `
+                <span class="question-number">Soal ${currentQuestion + 1}</span>
+                <p>${q.question}</p>
+            `;
+
+            answerOptions.innerHTML = q.answers.map((answer, i) => `
+                <div class="answer-option" onclick="checkAnswer(${i})">${answer}</div>
+            `).join('');
+
+            explanationEl.innerHTML = `
+                <h4>Penjelasan:</h4>
+                <div class="formula">${q.formula}</div>
+                <p>${q.explanation}</p>
+            `;
+        }
+
+        function checkAnswer(selected) {
+            const options = document.querySelectorAll('.answer-option');
+            const correct = questions[currentQuestion].correct;
+            
+            options.forEach(option => option.style.pointerEvents = 'none');
+            
+            if(selected === correct) {
+                options[selected].classList.add('correct');
+                score++;
+            } else {
+                options[selected].classList.add('incorrect');
+                options[correct].classList.add('correct');
+            }
+
+            explanationEl.classList.add('show-explanation');
+
+            setTimeout(() => {
+                questionContainer.classList.add('fade-out');
+                setTimeout(() => {
+                    currentQuestion++;
+                    questionContainer.classList.remove('fade-out');
+                    explanationEl.classList.remove('show-explanation');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect');
+                        option.style.pointerEvents = 'auto';
+                    });
+                    
+                    if(currentQuestion < questions.length) {
+                        showQuestion();
+                    } else {
+                        showResult();
+                    }
+                }, 500);
+            }, 2000);
+        }
+
+        function showResult() {
+            questionContainer.innerHTML = `
+                <h2>Hasil Kuis</h2>
+                <p>Skor Anda: ${score}/${questions.length}</p>
+                <button onclick="location.reload()">Coba Lagi</button>
+            `;
+            progressBar.style.width = '100%';
+        }
+
+        // Initialize quiz
+        showQuestion();
+    </script>
+</body>
+</html>
